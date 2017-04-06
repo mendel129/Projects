@@ -1,1 +1,3 @@
-description inline
+XML files: upnp service descriptions dumped using upnp device spy
+PCAP files: captured from android device running sony's proprietary app
+sony.txt: calls made to the tv from the app (extracted from pcap's)
