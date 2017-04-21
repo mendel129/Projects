@@ -1,0 +1,35 @@
+#yet another openssl wrapper to export pfx to some format's for apache/switches/loadbalancers/...
+param (
+    [string]$infile,
+    [string]$inpass,
+    [switch]$plaintextkey=$false
+)
+ 
+ try{
+                $actualfile = get-childitem $infile
+                $actualfilename = $actualfile.basename
+                
+                $outpass = $inpass
+                $outputkey = "$($actualfilename).key"
+                $outputcert = "$($actualfilename).crt"
+                $outputkeyunencrypted8 = "$($actualfilename).unencrypted8.pem"
+                $outputkeyunencrypted8chain = "$($actualfilename).unencrypted8.chain.pem"
+                $outputkeyunencrypted1 = "$($actualfilename).unencrypted1.pem"
+                
+                #get private key
+                & ".\openssl.exe" pkcs12 -in $infile -nocerts -out $outputkey -passin "pass:$inpass" -passout "pass:$outpass"
+                #get public key
+                & ".\openssl.exe" pkcs12 -in $infile -clcerts -passin "pass:$inpass" -nokeys -out $outputcert
+                
+                if($plaintextkey)
+                {
+                                #pkcs#1
+                                & ".\openssl.exe" rsa -in $outputkey -out $outputkeyunencrypted1 -passin "pass:$inpass"
+                                #pkcs#8
+                                & ".\openssl.exe" pkcs12  -in $infile -passin "pass:$inpass" -nocerts -nodes -out $outputkeyunencrypted8
+                                #pkcs#8 full chain
+                                & ".\openssl.exe" pkcs12 -in $infile -passin "pass:$inpass" -out $outputkeyunencrypted8chain -nodes
+                }
+
+}
+catch{write-error "error caught"}
