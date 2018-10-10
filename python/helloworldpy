@@ -1,0 +1,18 @@
+try:
+	import urllib3, requests
+	from bs4 import BeautifulSoup
+	from robobrowser import RoboBrowser
+	from requests.exceptions import ConnectionError
+	from urllib3.exceptions import ReadTimeoutError
+except ImportError:
+	print('Missing Dependency.')
+	sys.exit(0)
+
+
+URLLogin='http://192.168.1.1/'
+print("Connecting to " + URLLogin)
+browser = RoboBrowser(history=True, parser="html.parser", timeout=5)
+try:
+	browser.open(URLLogin)
+except Exception:
+	print('Connection failed.')
