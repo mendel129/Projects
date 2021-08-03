@@ -5,7 +5,7 @@ import paramiko
 
 
 username="root"
-#yes it's the actual password, no i don't care, yes it's public either way
+#yes it's the actual password, no i don't care, yes it's public either way -> https://mendelonline.be/wiki/index.php/Akuvox
 password='OjEEr3d%zyfc0'
 host="192.168.1.x"
 command = 'echo \'0\' > /proc/misc0/led_rfid';
