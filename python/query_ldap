@@ -1,0 +1,64 @@
+#query group members on active directory via ldap and kerberos
+#install ldap3 and winkerberos
+from ldap3 import Server, Connection, Tls, SASL, GSSAPI, ALL, SUBTREE, ALL_OPERATIONAL_ATTRIBUTES, ALL_ATTRIBUTES, SCHEMA
+import ssl
+import csv
+from datetime import datetime
+
+AD_HOST='somedomaincontrollerfqdn'
+AD_BASE='DC=corp,DC=contoso,DC=com'
+AD_GroupBASE='OU=Groups,OU=WFD,'+AD_BASE
+filename="loggedgroups"
+
+now = datetime.now()
+now = now.strftime("%Y%m%d_%H%M%S")
+with open(filename+"_"+now+".csv", 'a', newline='') as f:
+    writer = csv.writer(f, delimiter =';',quotechar ='"', quoting=csv.QUOTE_ALL)
+    row = ["GroupName","userdn","DateTime"]
+    writer.writerow(row)
+
+ad_server = Server(
+    AD_HOST,
+    use_ssl=True,
+    get_info=ALL
+)
+
+connection = Connection(
+    ad_server,
+    read_only=True,
+    check_names=True,
+    return_empty_attributes=True,
+    authentication=SASL, 
+    sasl_mechanism=GSSAPI, 
+    auto_bind=True
+)
+
+def get_group_users(cn):
+    with connection as conn:
+        conn.search(
+            search_base=AD_BASE,
+            search_filter='(&(objectCategory=person)(objectClass=user)(memberOf:1.2.840.113556.1.4.1941:=%s))' % cn,
+            search_scope=SUBTREE,
+            attributes = ['objectClass', 'userAccountControl'])
+        members = []
+        for entry in conn.entries:
+            if not entry.userAccountControl in [546, 514, 66050, 66082]:
+                members.append(entry.entry_dn)
+
+        print(members)
+        print(len(members))
+        
+        with open(filename+"_"+now+".csv", 'a', newline='') as f:
+            writer = csv.writer(f, delimiter =';',quotechar ='"', quoting=csv.QUOTE_ALL)
+            for member in members:
+                row = [cn,member,now]
+                writer.writerow(row)
+
+print(connection.extend.standard.who_am_i())
+connection.search(AD_GroupBASE,'(&(cn=somename)(objectClass=group))', attributes = [ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
+for entry in connection.entries:
+    print("searching for " + entry.entry_dn)
+    get_group_users(entry.entry_dn)
+    # connection.entries[0].member
+    # for member in entry.member:
+        # print(member)
