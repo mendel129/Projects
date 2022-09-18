@@ -3,6 +3,7 @@
 #todo: add authentication, an open proxy is never a good idea!
 #todo2: not sure if url needs to be from urlpath, maybe hardcode
 #todo3: convert to post -> post get data out of urlpath
+#todo128: error handling :-p
 
 import json,urllib3,base64
 
