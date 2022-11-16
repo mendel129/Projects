@@ -10,3 +10,6 @@ print(jsondata["items"][0]["activeStep"]["label"]["main"]["EN"])
 
 for event in jsondata["items"][0]["events"]:
     print("---- " + str(event["date"]) + " - " + str(event["time"]) + " - " + str(event["key"]["EN"]["description"]))
+
+resp=requests.get("https://track.bpost.cloud/track/itemonroundstatus?itemIdentifier="+barcode+"&postalCode="+postcode)
+print("Stops to do: " + resp.json()["itemOnRoundStatus"]["nrOfStopsUntilTarget"][0])
