@@ -1,0 +1,16 @@
+# post stupid classic old legacy form data to aws lambda (millennials ftw! no json!)
+# curl -X POST -d "key1=qsdfqs&other=123" https://yourfunctionurl.lambda-url.eu-west-1.on.aws/
+
+import json
+from base64 import b64decode
+from urllib.parse import parse_qs
+
+def lambda_handler(event, context):
+
+    params = parse_qs(b64decode(event['body']).decode('utf-8'))
+    output=params.get('key1')[0]
+    
+    return {
+        'statusCode': 200,
+        'body': output
+    }
