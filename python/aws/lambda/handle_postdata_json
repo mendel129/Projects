@@ -1,5 +1,5 @@
 # the new school way using json
-#  curl -H "Content-Type: application/json" -d "{\"key1\":\"hi\"}" https://yourfunctionurl.lambda-url.eu-west-1.on.aws/
+# curl -H "Content-Type: application/json" -d "{\"key1\":\"hi\"}" https://yourfunctionurl.lambda-url.eu-west-1.on.aws/
 
 import json
 
