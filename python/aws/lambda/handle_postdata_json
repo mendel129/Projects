@@ -1,0 +1,14 @@
+# the new school way using json
+#  curl -H "Content-Type: application/json" -d "{\"key1\":\"hi\"}" https://yourfunctionurl.lambda-url.eu-west-1.on.aws/
+
+import json
+
+def lambda_handler(event, context):
+    bodydata=event['body']
+    bla=json.loads(bodydata)
+    output=bla['key1']
+    
+    return {
+        'statusCode': 200,
+        'body': output
+    }
