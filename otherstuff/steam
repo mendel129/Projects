@@ -1,0 +1,2 @@
+https://api.steampowered.com/IStoreBrowseService/GetItems/v1?input_json={%22ids%22:[{%22packageid%22:903905}],%22context%22:{%22language%22:%22english%22,%22country_code%22:%22BE%22,%22steam_realm%22:1},%22data_request%22:{%22include_reviews%22:true,%22include_basic_info%22:true}}
+https://api.steampowered.com/IPhysicalGoodsService/CheckInventoryAvailableByPackage/v1/?input_json={%22packageid%22:903905,%22country_code%22:%22BE%22}
