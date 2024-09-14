@@ -1,4 +1,6 @@
 # for the awesome https://github.com/Blueforcer/awtrix-light
+# https://blueforcer.github.io/awtrix3/#/README
+
 import requests,json
 
 ip="192.168.1.169"
@@ -51,3 +53,10 @@ for data in response.json()["features"]:
     # print(data["properties"]["timestamp"])
 requests.post(url+"/custom?name=testapp", json={"text":str(temp_value), "effect": "Matrix", "duration": "10"})
 requests.post(url+"/switch", json={"name":"testapp"})
+
+# https://www.slimnaarantwerpen.be/
+response=requests.get("https://www.slimnaarantwerpen.be/map/api/v1/map/features/layer/car-public-parking/feature/23?includeGeometry=false&lang=nl")
+print(str(response.json()["properties"]["title"]))
+freeSpots=str(response.json()["properties"]["freeSpots"])
+requests.post(url+"/custom?name=aparking", json={"text": freeSpots, "rainbow": True, "duration": "10", "icon":4360})
+requests.post(url+"/switch", json={"name":"aparking"})
