@@ -27,13 +27,6 @@ requests.post(url+"/custom?name=testapp", json={"effect": "Matrix", "duration": 
 # use to delete
 # print(requests.post(url+"/custom?name=testapp", json={}))
 
-# fetch free parking spots
-response=requests.get("https://www.slimnaarantwerpen.be/map/api/v1/map/features/layer/car-public-parking/feature/23?includeGeometry=false&lang=nl")
-freeSpots=str(response.json()["properties"]["freeSpots"])
-print(str(response.json()["properties"]["title"]) + ": " + freeSpots)
-requests.post(url+"/custom?name=aparking", json={"text": freeSpots, "rainbow": True, "duration": "10", "icon":4360})
-requests.post(url+"/switch", json={"name":"aparking"})
-
 # https://github.com/TimFranken/openkmi
 import requests, json, datetime
 wfs_endpoint = "https://opendata.meteo.be/service/synop/wfs?outputFormat=json"
