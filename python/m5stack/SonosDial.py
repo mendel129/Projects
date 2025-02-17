@@ -128,8 +128,11 @@ def trackcontrol_sonos(sonos_ip, action):
             xml_data=response.content.decode('utf-8')
             start_index = xml_data.find(start_tag) + len(start_tag)
             end_index = xml_data.find(end_tag)
-            trackid = xml_data[start_index:end_index].split("dc:title&gt")[1][1:-5]
-            trackid = trackid.replace("&amp;", "&")
+            tracktitle = xml_data[start_index:end_index].split("dc:title&gt")[1][1:-5]
+            tracktitle = tracktitle.replace("&amp;", "&")
+            trackcreator = xml_data[start_index:end_index].split("dc:creator&gt")[1][1:-5]
+            trackcreator = trackcreator.replace("&amp;", "&")
+            trackid = trackcreator + " - " + tracktitle
             return trackid
 
     except Exception as e:
@@ -164,8 +167,8 @@ def setup():
 
 def loop():
   global label0, rotary, sonos_ip, lbl_speaker, sonos_ip_living, sonos_ip_office, speaker, lbl_track, slowdown, lbl_trackx, slowdownlabelx, trackid
-  #only get current music every more or less 30 seconds? no clue on actual tick rate
   
+  #only get current music every more or less 30 seconds? no clue on actual tick rate
   if slowdown > 1000000:
     trackid=trackcontrol_sonos(sonos_ip, "GetPositionInfo")
     lbl_track.setText(str(trackid))
