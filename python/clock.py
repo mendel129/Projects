@@ -55,7 +55,9 @@ requests.post(url+"/custom?name=testapp", json={"text":str(temp_value), "effect"
 requests.post(url+"/switch", json={"name":"testapp"})
 
 # https://www.slimnaarantwerpen.be/
-response=requests.get("https://www.slimnaarantwerpen.be/map/api/v1/map/features/layer/car-public-parking/feature/23?includeGeometry=false&lang=nl")
+url="https://widget.slimnaarantwerpen.be/map/api/v1/map/features/layer/car-public-parking/feature/23?includeGeometry=false&lang=nl"
+headers={"Referer": "https://widget.slimnaarantwerpen.be/?_aui_api_version=2", "x-sna-apikey": "x-sna-apikey"}
+response=requests.get(url, headers=headers)
 print(str(response.json()["properties"]["title"]))
 freeSpots=str(response.json()["properties"]["freeSpots"])
 requests.post(url+"/custom?name=aparking", json={"text": freeSpots, "rainbow": True, "duration": "10", "icon":4360})
